@@ -1,0 +1,122 @@
+
+[
+    {
+        "category": "Electronics",
+        "subcategories": [
+            {
+                "name": "Mobile Phones",
+                "subcategories": [
+                    {
+                        "name": "Smartphones",
+                        "subcategories": [
+                            {
+                                "name": "Apple",
+                                "products": [
+                                    {
+                                        "productName": "iPhone",
+                                        "compatible": true,
+                                        "compatibleEngineBrand": "Apple A14 Bionic",
+                                        "modelNumber": "12 Pro",
+                                        "engineNumber": "A2345",
+                                        "replacementPartNumber": "RP-123"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Samsung",
+                                "products": [
+                                    {
+                                        "productName": "Samsung Galaxy",
+                                        "compatible": true,
+                                        "compatibleEngineBrand": "Exynos 2100",
+                                        "modelNumber": "S21 Ultra",
+                                        "engineNumber": "E5678",
+                                        "replacementPartNumber": "RP-456"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Laptops",
+                "subcategories": [
+                    {
+                        "name": "MacBooks",
+                        "subcategories": [
+                            {
+                                "name": "Apple",
+                                "products": [
+                                    {
+                                        "productName": "MacBook Pro1",
+                                        "compatible": true,
+                                        "compatibleEngineBrand": "Apple M1",
+                                        "modelNumber": "2021",
+                                        "engineNumber": "M1234",
+                                        "replacementPartNumber": "RP-789"
+                                    },
+                                    {
+                                        "productName": "MacBook Pro2",
+                                        "compatible": true,
+                                        "compatibleEngineBrand": "Apple M1",
+                                        "modelNumber": "2021",
+                                        "engineNumber": "M1234",
+                                        "replacementPartNumber": "RP-789"
+                                    },
+                                    {
+                                        "productName": "MacBook Pro3",
+                                        "compatible": true,
+                                        "compatibleEngineBrand": "Apple M1",
+                                        "modelNumber": "2021",
+                                        "engineNumber": "M1234",
+                                        "replacementPartNumber": "RP-789"
+                                    },
+                                    {
+                                        "productName": "MacBook Pro4",
+                                        "compatible": true,
+                                        "compatibleEngineBrand": "Apple M1",
+                                        "modelNumber": "2021",
+                                        "engineNumber": "M1234",
+                                        "replacementPartNumber": "RP-789"
+                                    },
+                                    {
+                                        "productName": "MacBook Pro5",
+                                        "compatible": true,
+                                        "compatibleEngineBrand": "Apple M1",
+                                        "modelNumber": "2021",
+                                        "engineNumber": "M1234",
+                                        "replacementPartNumber": "RP-789"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "category": "Clothing",
+        "subcategories": [
+            {
+                "name": "Men's Clothing",
+                "subcategories": [
+                    {
+                        "name": "T-shirts",
+                        "products": [
+                            {
+                                "productName": "Plain T-shirt",
+                                "compatible": false,
+                                "compatibleEngineBrand": "",
+                                "modelNumber": "",
+                                "engineNumber": "",
+                                "replacementPartNumber": ""
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]
