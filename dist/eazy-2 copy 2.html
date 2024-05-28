@@ -2,7 +2,7 @@
 <html lang="zh-cmn-Hans">
     <head>
         <meta charset="UTF-8" />
-        <title>NOP BOOK TEST</title>
+        <title>Product手册</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
         <meta name="renderer" content="webkit" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -164,7 +164,7 @@
                 display: flex;
                 align-items: center;
                 border: 1px solid #666;
-                padding: 0 2mm;
+                padding: 0 4mm;
             }
             .my-content-box {
                 height: 10mm;
@@ -262,6 +262,7 @@
                 font-size: 16px;
                 font-weight: bold;
                 line-height: 18px;
+                padding-bottom: 4px;
             }
             .item-des{
                 font-size: 10px;
@@ -343,13 +344,14 @@
             }
             var items = [];
             async function run() {
-                const data = await $.getJSON("./data.json");
+                const data = await $.getJSON("./mock.json");
+                
+                console.log(data);
                 console.log(data);
                 for (var i in data) {
                     const oneData = data[i];
                     console.log(`onedata`, oneData.categoryName);
                     items.push('<div data-op-type="new-page" />');
-
                     //this.book.addPage().getElem().addClass('volume-' + volumeIndex);
                     items.push(
                         '<h2  id="voucher-title-' +
@@ -362,9 +364,6 @@
                         const twoData = oneData.children[j];
                         console.log(`twoData`, twoData.categoryName);
                         // items.push('<div data-op-type="new-page" />');
-
-                        items.push( getPageHedaerStr( oneData.categoryName ,i)  )
-                        
                         //this.book.addPage().getElem().addClass('volume-' + volumeIndex);
                         items.push(
                             '<h3 id="voucher-title-' +
@@ -383,6 +382,8 @@
                                     <span class="three-category">${threeData.categoryName} </span>
                                     </h4>`
                             );
+                            // items.push( getPageHedaerStr( `${oneData.categoryName}-${twoData.categoryName}-${threeData.categoryName}` ,i)  )
+                            items.push( getPageHedaerStr( `${oneData.categoryName}` ,i)  )
                             items.push(
                                 `<div class="my-category-title-box">
                                     <span class="two-category">${twoData.categoryName} </span>  
