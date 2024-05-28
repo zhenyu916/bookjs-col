@@ -145,95 +145,6 @@
 <div id="content-box" style="display: none">
 </div>
 <script>
-    var productData = [
-    {
-        category: 'Electronics',
-        subcategories: [
-            {
-                name: 'Mobile Phones',
-                subcategories: [
-                    {
-                        name: 'Smartphones',
-                        subcategories: [
-                            {
-                                name: 'Apple',
-                                products: [
-                                    {
-                                        productName: 'iPhone',
-                                        compatible: true,
-                                        compatibleEngineBrand: 'Apple A14 Bionic',
-                                        modelNumber: '12 Pro',
-                                        engineNumber: 'A2345',
-                                        replacementPartNumber: 'RP-123'
-                                    }
-                                ]
-                            },
-                            {
-                                name: 'Samsung',
-                                products: [
-                                    {
-                                        productName: 'Samsung Galaxy',
-                                        compatible: true,
-                                        compatibleEngineBrand: 'Exynos 2100',
-                                        modelNumber: 'S21 Ultra',
-                                        engineNumber: 'E5678',
-                                        replacementPartNumber: 'RP-456'
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                name: 'Laptops',
-                subcategories: [
-                    {
-                        name: 'MacBooks',
-                        subcategories: [
-                            {
-                                name: 'Apple',
-                                products: [
-                                    {
-                                        productName: 'MacBook Pro',
-                                        compatible: true,
-                                        compatibleEngineBrand: 'Apple M1',
-                                        modelNumber: '2021',
-                                        engineNumber: 'M1234',
-                                        replacementPartNumber: 'RP-789'
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        category: 'Clothing',
-        subcategories: [
-            {
-                name: 'Men\'s Clothing',
-                subcategories: [
-                    {
-                        name: 'T-shirts',
-                        products: [
-                            {
-                                productName: 'Plain T-shirt',
-                                compatible: false,
-                                compatibleEngineBrand: '',
-                                modelNumber: '',
-                                engineNumber: '',
-                                replacementPartNumber: ''
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    }
-];
     bookConfig = {
         pageSize : 'ISO_A4',
         orientation :  'portrait',
@@ -248,7 +159,7 @@
                 wkHtmlToPdf: true,
                 params : {
                      // 打印超时时间
-                     timeout : 160000,
+                     timeout : 60000,
                 },
             },
             webPrint : true,
@@ -274,7 +185,7 @@
                 '"/></div>');
             items.push('<div data-op-type="new-page" />');
         };
-        
+
         var renderPreface = function() {
             items.push('<div data-op-type="pendants"></div>');
             items.push('<div data-op-type="new-page" />');
@@ -291,31 +202,17 @@
             items.push('<h2 id="voucher-title-' + volumeIndex + '">' + volumeData.title + '</h2>');
             for(var chapterIndex in volumeData.chapters){
                 var chapterData = volumeData.chapters[chapterIndex];
+                
+                items.push('<div data-op-type="pendants">' + 
+'<div class="volume-mark volume-' + volumeIndex + '"><span class="">第' + volumeData.number + '卷</span></div>' +
+'<div class="chapter-mark"><div>' + volumeData.title + ' ● ' + chapterData.title + '</div></div>' + 
+'</div>');
                 items.push('<h3 id="chapter-title-' + volumeIndex + '-' + chapterIndex + '">' + chapterData.title + '</h3>');
-                items.push('<p class="nop-text" data-op-type="text">'+`ddddddd`+'</p>');
 
-                items.push(`    <table data-op-type="table" class="nop-simple-table-2 main-table" border="1">
-        <thead>
-        <tr>
-            <th width="100" colspan="2">ID</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td data-split-repeat="true">
-                <div data-op-type="block">1</div>
-            </td>
-            <td rowspan="3" data-split-repeat="true">张三</td>
-        </tr>
-
-        </tbody>
-    </table>`);
-                // var texts = chapterData.paragraphs;
-                // for(var i in texts){
-                //     console.log(i);
-                //     console.log(texts[i] );
-                //     items.push('<p class="nop-text" data-op-type="text">'+texts[i]+'</p>');
-                // }
+                var texts = chapterData.paragraphs;
+                for(var i in texts){
+                    items.push('<p class="nop-text" data-op-type="text">'+texts[i]+'</p>');
+                }
             }
         };
      
