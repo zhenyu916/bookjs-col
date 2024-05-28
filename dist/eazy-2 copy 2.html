@@ -203,12 +203,20 @@
                 position: relative;
                 text-align: center;
             }
+            
             .page-num-left{
                 color: #F5911D;
                 font-size: 20px;
                 font-weight: bold;
                 position: absolute;
                 left: 10mm;
+            }
+            .page-num-right{
+                color: #F5911D;
+                font-size: 20px;
+                font-weight: bold;
+                position: absolute;
+                right: 10mm;
             }
             h3{
                 /* display: none; */
@@ -225,11 +233,11 @@
                 position: absolute;
                 left: -9999px;
             }
-            .two-category{
+            .nop-page-item.nop-page-item-odd .two-category{
                 color: #777;
                 font-size: 1.3rem;
             }
-            .three-category{
+            .nop-page-item.nop-page-item-odd .three-category{
                 /* color: #777; */
                 font-size: 1.3rem;
                 font-weight: bold;
@@ -237,9 +245,10 @@
             .my-category-title-box{
                 line-height: 2em;
             }
+            
             /* .item-even */
-            .nop-page-item.nop-page-item-even .volume-mark.my-page-title,
-            .nop-page-item.nop-page-item-odd .volume-mark.my-page-title{
+
+            .nop-page-item.nop-page-item-odd  .volume-mark.my-page-title{
                 top: 0;
                 width: 100%;
                 height: 50px;
@@ -255,6 +264,28 @@
                 border-radius: 0;
                 
             }
+
+            .nop-page-item.nop-page-item-even .volume-mark.my-page-title{
+                top: 0;
+                width: 100%;
+                height: 50px;
+                background-repeat: no-repeat;
+                background-color: #F5911D;
+                background-size: auto 50px;
+                background-position: right;
+                padding-right: 65mm;
+                display: flex;
+                align-items: center;
+                text-align: right;
+                justify-content: flex-end;
+                flex-wrap: wrap;
+                color: white;
+                border-radius: 0;
+                background-image: url("data:image/jpeg;base64,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");
+
+                
+            }
+
             .page-title-item{
                 width: 100%;
             }
@@ -281,7 +312,7 @@
                 },
                 simplePageNum: {
                     pageBegin: "#voucher-title-0",
-                    pendant : '<div class="page-num-simple"><span class="page-num-left">${PAGE >10?PAGE:"0"+PAGE}</span><span>Fridayparts Copyright ◎ 2024 All rights reserved</span></div>',
+                    pendant : '<div class="page-num-simple": "><span class="page-num-${PAGE%2==0?\'right\':\'left\'}">${PAGE >10?PAGE:"0"+PAGE}</span><span>Fridayparts Copyright ◎ 2024 All rights reserved</span></div>',
                 },
                 padding: "15mm 10mm 10mm 10mm",
                 toolBar: {
@@ -405,7 +436,6 @@
                 $("#content-box").html(items.join(""));
                 bookConfig.start = true;
             }
-     
             // items.push(pendantsStr)
             run();
         </script>
