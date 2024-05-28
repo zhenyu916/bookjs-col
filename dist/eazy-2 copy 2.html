@@ -312,7 +312,7 @@
                 },
                 simplePageNum: {
                     pageBegin: "#voucher-title-0",
-                    pendant : '<div class="page-num-simple": "><span class="page-num-${PAGE%2==0?\'right\':\'left\'}">${PAGE >10?PAGE:"0"+PAGE}</span><span>Fridayparts Copyright ◎ 2024 All rights reserved</span></div>',
+                    pendant : '<div class="page-num-simple": "><span class="page-num-${PAGE%2==0?\'right\':\'left\'}">${PAGE >9?PAGE:"0"+PAGE}</span><span>Fridayparts Copyright ◎ 2024 All rights reserved</span></div>',
                 },
                 padding: "15mm 10mm 10mm 10mm",
                 toolBar: {
@@ -345,7 +345,7 @@
 
             function getTableStr(product) {
                 const str = `
-            <div data-op-type="block"  class="my-block">
+            <div data-op-type="mix-box"  class="my-block">
                 <div class="my-header">${product.comparible}</div>
                 ${getPropsStr('Comparible' ,product.comparible )}
                 ${getPropsStr('Comparible Engine Brand' , Math.random()>0.5?product.comparibleEngineBrand:undefined )}
