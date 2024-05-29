@@ -444,16 +444,6 @@
 
             return value ? str : "";
         }
-        function getTableStr(product) {
-            const str = `
-                <div class="my-header">${product.comparible}</div>
-                ${getPropsStr('Comparible', product.comparible)}
-                ${getPropsStr('Comparible Engine Brand', product.comparibleEngineBrand)}
-                ${getPropsStr('Mode Number', product.modeNumber)}
-                ${getPropsStr('Replacement PartNumber', product.replacementPartNumber)}
-            `;
-            return str;
-        }
         function getPageHedaerStr(oneTitle, i) {
             const str = `
                 <div data-op-type="pendants" class=""> 
@@ -476,98 +466,6 @@
         let pageHeight = basePageHeight - 30  //266
         pageHeight = 260
         // 左侧放内容 
-        let myData = [{
-            type: 'title',
-            hNumber: 3,
-            index: "0",
-            content: '2 / 1',
-            height: 10
-        },
-        {
-            type: 'title',
-            hNumber: 4,
-            index: "0-0",
-            content: '3 / 1',
-            height: 10
-        },
-        {
-            type: 'title',
-            hNumber: 4,
-            index: "0-1",
-            content: '3 / 1',
-            height: 10
-        },
-        {
-            type: 'title',
-            hNumber: 3,
-            index: "1",
-            content: '2 / 1',
-            height: 10
-        },
-        {
-            type: 'title',
-            hNumber: 4,
-            index: "1-0",
-            content: '3 / 1',
-            height: 10
-        },
-        {
-            type: 'title',
-            hNumber: 4,
-            index: "1-1",
-            content: '3 / 1',
-            height: 10
-        },
-        {
-            type: 'product',
-            key: "productName",
-            value: "FuelInjector 4010642 For Cummins Engine K38 KTA38_1",
-            height: 10
-        },
-        {
-            type: 'product',
-            key: "comparible",
-            value: "For BOBCAT",
-            height: 10
-        },
-        {
-            type: 'product',
-            key: "comparibleEngineBrand",
-            value: "For BOBCAT",
-            height: 10
-        },
-        {
-            type: 'product',
-            key: "modeNumber",
-            value: "A770,S740,S750,S770,S850,T740,T750_1",
-            height: 10
-        }, {
-            type: 'product',
-            key: "engineNumber",
-            value: "A770,S740,S750,S770,S850,T740,T750_1",
-            height: 10
-        }, {
-            type: 'product',
-            key: "modeNumber",
-            value: "D34_1",
-            height: 10
-        },
-        {
-            type: 'product',
-            key: "replacementPartNumber",
-            value: "03 - 970 -0659.5303 - 988 -0458.5303 - 988-05125303 - 988 -0659, 53039700458, 53039700512_1",
-            height: 10
-        },
-        {
-            type: 'split',
-            content: '1 / 1',
-            height: 2
-        }
-        ]
-        // for (let i = 0; i < 6; i++) {
-        //     myData = myData.concat(myData)
-        // }
-
         function sortContent(sortData) {
             const pageList = []
             let temp = {
@@ -632,42 +530,47 @@
 
             return pageList
         }
-        const pageList = sortContent(myData)
 
-        function getHalfStr(typeList) {
-            let halfStr = ""
-            for (let index = 0; index < typeList.length; index++) {
-                const item = typeList[index];
-                if (item.type === "product") {
-                    if (item.key == "productName") {
-                        halfStr += ` <div class="my-header">${item.value}</div> `
-                    } else {
-                        halfStr += getPropsStr(item.key, item.value)
-                    }
-                } else if (item.type === "title") {
-                    halfStr += `
-                        <h${item.hNumber} id="voucher-title-${item.index}" > ${item.content} </h${item.hNumber}>
+
+
+        function redenrOneCategory(myData, parentIndex, parentData) {
+            const pageList = sortContent(myData)
+            function getHalfStr(typeList) {
+                let halfStr = ""
+                for (let index = 0; index < typeList.length; index++) {
+                    const item = typeList[index];
+                    if (item.type === "product") {
+                        if (item.key == "productName") {
+                            halfStr += ` <div class="my-header">${item.value}</div> `
+                        } else {
+                            halfStr += getPropsStr(item.key, item.value)
+                        }
+                    } else if (item.type === "title") {
+                        halfStr += `
+                        <h${item.hNumber} id="voucher-title-${parentIndex}-${item.index}" > ${item.content} </h${item.hNumber}>
                         <div  class="my-page-category-title" style="height: ${item.height}mm"> 标题信息:${item.content} </div>
                     `
-                }
-                else if (item.type === "split") {
-                    halfStr += `
+                        items.push(getPageHedaerStr(`${parentData.categoryName}`, parentIndex))
+
+                    }
+                    else if (item.type === "split") {
+                        halfStr += `
                         <div class="my-page-split" style="height: 2mm" > </div>
                     `
+                    }
                 }
+                return halfStr
             }
-            return halfStr
-        }
-        for (let i = 0; i < pageList.length; i++) {
-            const page = pageList[i]
-            console.log(`当前页面是`, page);
-            if (!page) {
-                items.push(`<div data-op-type="new-page"></div>`)
-                continue
-            }
-            let leftStr = getHalfStr(page.leftList)
-            const rightStr = getHalfStr(page.rightList)
-            let temp = `
+            for (let i = 0; i < pageList.length; i++) {
+                const page = pageList[i]
+                console.log(`当前页面是`, page);
+                if (!page) {
+                    items.push(`<div data-op-type="new-page"></div>`)
+                    continue
+                }
+                let leftStr = getHalfStr(page.leftList)
+                const rightStr = getHalfStr(page.rightList)
+                let temp = `
             <div data-op-type="block" class="my-base-page"  style="height:${296}mm" >
                 <div class="my-base-left">
                     ${leftStr}
@@ -677,12 +580,27 @@
                 </div>
             </div>
             `
-            items.push(temp)
-        }
+                items.push(temp)
 
-        console.log(`items`, items);
-        $("#content-box").html(items.join(""));
-        bookConfig.start = true;
+            }
+
+        }
+        $.getJSON('./arrData.json').then(function (data) {
+            for (let index = 0; index < data.length; index++) {
+                const arrData = data[index].arrdata;
+                const oneTile = `<h2 id="voucher-title-${index}" >  ${data[index].categoryName}  </h2>`
+                items.push(oneTile)
+                redenrOneCategory(arrData, index, data[index])
+                items.push(`<div data-op-type="new-page"></div>`)
+            }
+
+            console.log(`items`, items);
+            $("#content-box").html(items.join(""));
+            bookConfig.start = true;
+        })
+
+
+
 
     </script>
 </body>
