@@ -394,16 +394,14 @@
             height: 260mm;
             padding-left: 2mm;
         }
-        .my-page-category-title{
+
+        .my-page-category-title {
             font-size: 16px;
             display: flex;
             align-items: center;
         }
     </style>
-    <!-- simpleCatalog: {
-                titlesSelector: "h2,h3,h4,h5",
-                showCatalog: true
-            }, -->
+
     <div id="content-box" style="display: none"></div>
     <script>
         bookConfig = {
@@ -427,6 +425,10 @@
                 saveHtml: true,
             },
             start: false,
+            simpleCatalog: {
+                titlesSelector: "h2,h3,h4,h5",
+                showCatalog: true
+            },
         };
     </script>
     <script>
@@ -476,7 +478,44 @@
         // 左侧放内容 
         let myData = [{
             type: 'title',
-            content: '1 / 1',
+            hNumber: 3,
+            index: "0",
+            content: '2 / 1',
+            height: 10
+        },
+        {
+            type: 'title',
+            hNumber: 4,
+            index: "0-0",
+            content: '3 / 1',
+            height: 10
+        },
+        {
+            type: 'title',
+            hNumber: 4,
+            index: "0-1",
+            content: '3 / 1',
+            height: 10
+        },
+        {
+            type: 'title',
+            hNumber: 3,
+            index: "1",
+            content: '2 / 1',
+            height: 10
+        },
+        {
+            type: 'title',
+            hNumber: 4,
+            index: "1-0",
+            content: '3 / 1',
+            height: 10
+        },
+        {
+            type: 'title',
+            hNumber: 4,
+            index: "1-1",
+            content: '3 / 1',
             height: 10
         },
         {
@@ -523,13 +562,14 @@
             type: 'split',
             content: '1 / 1',
             height: 2
-        }]
-        for (let i = 0; i < 6; i++) {
-            myData = myData.concat(myData)
-
         }
-        const pageList = []
-        function sortContent() {
+        ]
+        // for (let i = 0; i < 6; i++) {
+        //     myData = myData.concat(myData)
+        // }
+
+        function sortContent(sortData) {
+            const pageList = []
             let temp = {
                 leftList: [],
                 leftHeight: 0,
@@ -541,21 +581,20 @@
             }
             let i = 0 // 索引
             while (true) {
-                const currentData = myData[i]
+                const currentData = sortData[i]
                 // debugger
                 console.log(`当前数据: `, currentData);
-                if (myData.length === i) {
+                if (sortData.length === i) {
                     console.log(`遍历完所有数据`);
                     pageList.push(temp)
-
-                    return
+                    break
                 }
                 if (!temp.leftFull) {
                     // 左侧没满 , 尝试加到左侧去
                     if (temp.leftHeight + currentData.height > temp.maxHeight) {
                         temp.leftFull = true
                     } else {
-                        temp.leftList.push(myData[i])
+                        temp.leftList.push(sortData[i])
                         temp.leftHeight = temp.leftHeight + currentData.height
                         i++
                         continue
@@ -567,7 +606,7 @@
                     if (temp.rightHeight + currentData.height > temp.maxHeight) {
                         temp.rightFull = true
                     } else {
-                        temp.rightList.push(myData[i])
+                        temp.rightList.push(sortData[i])
                         temp.rightHeight = temp.rightHeight + currentData.height
                         i++
                         continue
@@ -589,12 +628,36 @@
                     pageList.push(undefined)
                 }
             }
+
+
+            return pageList
         }
-        sortContent()
+        const pageList = sortContent(myData)
 
-        console.log(`pageList`, pageList);
-
-
+        function getHalfStr(typeList) {
+            let halfStr = ""
+            for (let index = 0; index < typeList.length; index++) {
+                const item = typeList[index];
+                if (item.type === "product") {
+                    if (item.key == "productName") {
+                        halfStr += ` <div class="my-header">${item.value}</div> `
+                    } else {
+                        halfStr += getPropsStr(item.key, item.value)
+                    }
+                } else if (item.type === "title") {
+                    halfStr += `
+                        <h${item.hNumber} id="voucher-title-${item.index}" > ${item.content} </h${item.hNumber}>
+                        <div  class="my-page-category-title" style="height: ${item.height}mm"> 标题信息:${item.content} </div>
+                    `
+                }
+                else if (item.type === "split") {
+                    halfStr += `
+                        <div class="my-page-split" style="height: 2mm" > </div>
+                    `
+                }
+            }
+            return halfStr
+        }
         for (let i = 0; i < pageList.length; i++) {
             const page = pageList[i]
             console.log(`当前页面是`, page);
@@ -602,51 +665,8 @@
                 items.push(`<div data-op-type="new-page"></div>`)
                 continue
             }
-            let leftStr = ""
-            for (let index = 0; index < page.leftList.length; index++) {
-                const leftItem = page.leftList[index];
-                if (leftItem.type === "product") {
-                    if (leftItem.key == "productName") {
-                        leftStr += ` <div class="my-header">${leftItem.value}</div> `
-                    } else {
-                        leftStr += getPropsStr(leftItem.key, leftItem.value)
-                    }
-
-
-                } else if (leftItem.type === "title") {
-                    leftStr += `
-                        <div  class="my-page-category-title" style="height: ${leftItem.height}mm"> 标题信息:${leftItem.content} </div>
-                    `
-                }
-                else if (leftItem.type === "split") {
-                    leftStr += `
-                        <div class="my-page-split" style="height: 2mm" > </div>
-                    `
-                }
-
-            }
-
-            let rightStr = ""
-            for (let index = 0; index < page.rightList.length; index++) {
-                const leftItem = page.rightList[index];
-                if (leftItem.type === "product") {
-                    if (leftItem.key == "productName") {
-                        rightStr += ` <div class="my-header">${leftItem.value}</div> `
-                    } else {
-                        rightStr += getPropsStr(leftItem.key, leftItem.value)
-                    }
-                } else if (leftItem.type === "title") {
-                    rightStr += `
-                        <div  style="height: ${leftItem.height}mm"> 标题信息:${leftItem.content} </div>
-                    `
-                }
-                else if (leftItem.type === "split") {
-                    rightStr += `
-                        <div class="my-page-split" style="height: 2mm" > </div>
-                    `
-                }
-            }
-            // const str = 
+            let leftStr = getHalfStr(page.leftList)
+            const rightStr = getHalfStr(page.rightList)
             let temp = `
             <div data-op-type="block" class="my-base-page"  style="height:${296}mm" >
                 <div class="my-base-left">
@@ -659,8 +679,6 @@
             `
             items.push(temp)
         }
-
-
 
         console.log(`items`, items);
         $("#content-box").html(items.join(""));
