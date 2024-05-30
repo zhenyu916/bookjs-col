@@ -168,6 +168,9 @@
         }
     </style>
     <style>
+        .catalog-level{
+            padding: 0 4mm;
+        }
         .my-header {
             background-color: #1a5fa9 !important;
             font-weight: bold;
@@ -226,6 +229,10 @@
             /* display: flex; */
             position: relative;
             text-align: center;
+            bottom: 7mm;
+            font-weight: 500;
+            font-size: 14px;
+            color: #aaa;
         }
 
         .page-num-left {
@@ -372,6 +379,7 @@
             width: 100%;
             /* background-color: #26dca9; */
             padding: 15mm 10mm;
+            padding-top: 18mm;
             color: #000;
         }
 
@@ -495,7 +503,6 @@
                         temp.leftList.push(sortData[i])
                         temp.leftHeight = temp.leftHeight + currentData.height
                         i++
-                        continue
                     }
                     continue
                 }
@@ -507,7 +514,6 @@
                         temp.rightList.push(sortData[i])
                         temp.rightHeight = temp.rightHeight + currentData.height
                         i++
-                        continue
                     }
                     continue
                 }
@@ -571,7 +577,7 @@
                 let leftStr = getHalfStr(page.leftList)
                 const rightStr = getHalfStr(page.rightList)
                 let temp = `
-            <div data-op-type="block" class="my-base-page"  style="height:${296}mm" >
+            <div data-op-type="block" class="my-base-page"  style="height:296mm" >
                 <div class="my-base-left">
                     ${leftStr}
                 </div>
@@ -597,10 +603,31 @@
             console.log(`items`, items);
             $("#content-box").html(items.join(""));
             bookConfig.start = true;
+
+
         })
 
 
-
+        function getTitleJSON() {
+            const titleDom = document.querySelectorAll('.catalog-level')
+            const data = [...titleDom].map(dom => {
+                const level = dom.className.split('-').pop()
+                const title = dom.querySelectorAll('a')[0].text
+                const page = dom.querySelectorAll('a')[2].text
+                const  href = '#'+dom.querySelectorAll('a')[0].href.split('#').pop()
+                const res = {
+                    level,
+                    href,
+                    title,
+                    page,
+                    height: 6
+                }
+                return res
+            })
+            console.log(data);
+            localStorage.setItem("titleData", JSON.stringify(data))
+            return data
+        }
 
     </script>
 </body>

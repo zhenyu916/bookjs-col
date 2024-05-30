@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+    <title>NOP BOOK TEST</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--<meta name="screen-orientation" content="portrait">-->
+    <!--<meta name="x5-orientation" content="portrait">-->
+    <meta name="format-detection" content="telephone=no">
+    <meta name="author" content="nop">
+    <meta name="generator" content="wkhtmltopdf">
+    <link rel="shortcut icon" href="./static/img/nop.jpg" type="image/x-icon">
+    <meta name="description" content="">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+    <script src="./static/js/polyfill.min.js"></script>
+    <script src="./static/js/jquery.min.js"></script>
+    <script src="./static/js/lodash.min.js"></script>
+    <script src="./static/js/bookjs/latest/bookjs-eazy.min.js"></script>
+</head>
+
+<body>
+    <style>
+        table {
+            width: 100%;
+        }
+
+        tr {
+            height: 50px;
+        }
+
+        .flex-content {
+            display: flex;
+        }
+
+        .flex-content .col {
+            padding: 0 2mm;
+            border-right: 1px dashed #ccc;
+            height: 260mm;
+            flex: 1;
+            align-items: center;
+        }
+
+        .flex-content .col:last-child {
+            border-right: 0
+        }
+
+        .flex-content .item {
+            display: flex;
+            align-items: center;
+            position: relative;
+            height: 6mm;
+
+        }
+
+        .item .left {
+            position: absolute;
+            background-color: white;
+            left: 0;
+            height: 100%;
+            height: 6mm;
+            top: 0;
+            padding-right: 2mm;
+
+        }
+
+        .item .dashed {
+            width: 100%;
+            height: 1px;
+            border-top: 1px dashed #333;
+
+        }
+
+        .item .right {
+            position: absolute;
+            right: 0;
+            height: 100%;
+            background-color: white;
+            height: 6mm;
+            top: 0;
+            padding-left: 2mm;
+
+        }
+
+        .level1 {
+            color: #000;
+            font-weight: bold;
+        }
+        /* .level1 .icon-box{
+          
+            left: -5mm;
+            top: 1mm;
+            background-color: aqua;
+            height: 4mm;
+        } */
+        .level2 {
+            text-indent: 4mm;
+            color: #1A5FA9;
+            font-weight: bold;
+        }
+
+        .level3 {
+            font-weight: bold;
+            color: orange;
+            text-indent: 8mm
+        }
+
+        .yema {
+            font-weight: bold;
+            color: orange;
+        }
+        .my-href{
+            color: unset;
+            text-decoration: none;
+            line-height: 6mm;
+        }
+    </style>
+    <script>
+        bookConfig = {
+            pageSize: "ISO_A4",
+            orientation: "portrait",
+            toolBar: {
+                webPrint: true,
+                saveHtml: true,
+            },
+            start: true,
+            padding: "15mm 10mm",
+        };
+    </script>
+    <div id="content-box" style="display: none">
+
+    </div>
+    <script>
+
+        function sortContent(sortData) {
+            const pageList = []
+            const empty = {
+                maxHeight: 260,
+
+                leftList: [],
+                leftHeight: 0,
+                leftFull: false,
+
+                middleList: [],
+                middleFull: false,
+                middleHeight: 0,
+
+                rightList: [],
+                rightFull: false,
+                rightHeight: 0,
+            }
+            let temp = JSON.parse(JSON.stringify(empty))
+            let i = 0 // 索引
+            while (true) {
+                const currentData = sortData[i]
+                // debugger
+                console.log(`当前数据: `, currentData);
+                if (sortData.length === i) {
+                    console.log(`遍历完所有数据`);
+                    pageList.push(temp)
+                    break
+                }
+                if (!temp.leftFull) {
+                    // 左侧没满 , 尝试加到左侧去
+                    if (temp.leftHeight + currentData.height > temp.maxHeight) {
+                        temp.leftFull = true
+                    } else {
+                        temp.leftList.push(sortData[i])
+                        temp.leftHeight = temp.leftHeight + currentData.height
+                        i++
+                    }
+                    continue
+                }
+                if (!temp.middleFull) {
+                    // 左侧没满 , 尝试加到左侧去
+                    console.log(`中间没满`);
+                    if (temp.middleHeight + currentData.height > temp.maxHeight) {
+                        temp.middleFull = true
+                    } else {
+                        temp.middleList.push(sortData[i])
+                        temp.middleHeight = temp.middleHeight + currentData.height
+                        i++
+                    }
+                    continue
+                }
+
+
+                if (!temp.rightFull) {
+                    // 右边侧没满 , 加到右侧去
+                    if (temp.rightHeight + currentData.height > temp.maxHeight) {
+                        temp.rightFull = true
+                    } else {
+                        temp.rightList.push(sortData[i])
+                        temp.rightHeight = temp.rightHeight + currentData.height
+                        i++
+                    }
+                    continue
+                }
+                if (temp.leftFull && temp.middleFull && temp.rightFull) {
+                    // 左右都满了 添加新的分页
+                    pageList.push(temp)
+                    temp = JSON.parse(JSON.stringify(empty))
+                    pageList.push(undefined)
+                }
+            }
+
+
+            return pageList
+        }
+        const items = []
+        $.getJSON('./title.json').then(function (data) {
+            // data = [...data, ...data]
+            console.log(`ddd`);
+            const pageList = sortContent(data)
+            console.log(`pageList`, pageList);
+            for (let i = 0; i < pageList.length; i++) {
+                const page = pageList[i];
+                if (page) {
+                    renderTitle(page)
+                }
+                else {
+                    items.push(`<div data-op-type="new-page"></div>`)
+                }
+
+            }
+
+            $("#content-box").html(items.join(""));
+            bookConfig.start = true;
+        })
+        function getCol(list) {
+            let str = ''
+            for (let i = 0; i < list.length; i++) {
+                const item = list[i];
+                str += `
+                <div class="item" style="height:6mm">
+                    <div class="content left level${item.level}">
+   
+                        <a class="my-href" href="${item.href}">${item.title}</a>
+                    </div>
+                    <div class="dashed">
+                        <a class="my-href" href="${item.href}"></a>
+                    </div>
+                    <div class="yema right">
+                        <a class="my-href" href="${item.href}">${item.page}</a>
+                    </div>
+                </div>
+            `
+            }
+            return str
+        }
+        function renderTitle(page) {
+            const leftStr = getCol(page.leftList)
+            const middleStr = getCol(page.middleList)
+            const rightStr = getCol(page.rightList)
+
+
+            let temp = `
+            <div data-op-type="block" class="flex-content">
+                <div class="col-1 col">
+                    ${leftStr}
+                </div>
+                <div class="col-2 col">
+                    ${middleStr}
+                </div>
+                <div class="col-3 col">
+                    ${rightStr}
+                </div>
+            </div>
+            `
+            items.push(temp)
+        }
+
+    </script>
+</body>
+
+</html>
