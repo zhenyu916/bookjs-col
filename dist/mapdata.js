@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const data = require('./data.json')
+const data = require('./mock.json')
 console.log(data);
 const res = []
 for (let i = 0; i < data.length; i++) {
@@ -24,7 +24,7 @@ function formatOneCategory(oneCategory, i) {
             hNumber: 3,
             index: `${i}`,
             content: twoCategoryData.categoryName,
-            height: 10
+            height: 0
         })
         console.log(`twoCategoryData`, twoCategoryData);
         for (let k = 0; k < twoCategoryData.children.length; k++) {
@@ -33,6 +33,7 @@ function formatOneCategory(oneCategory, i) {
                 type: 'title',
                 hNumber: 4,
                 index: `${i}-${j}`,
+                preCategory: twoCategoryData.categoryName,
                 content: threeData.categoryName,
                 height: 10
             })
@@ -41,46 +42,48 @@ function formatOneCategory(oneCategory, i) {
                 arr.push({
                     type: 'product',
                     key: "productName",
-                    value: product.productName,
+                    value: product.name,
                     height: 10
                 })
-                if (product.comparible) {
+                if (product.brand) {
                     arr.push({
                         type: 'product',
-                        key: "Comparible",
-                        value: product.comparible,
+                        key: "Model  Make",
+                        value: product.brand,
                         height: 10
                     })
                 }
-                if (product.comparibleEngineBrand) {
+
+                if (product.application) {
                     arr.push({
                         type: 'product',
-                        key: "Comparible EngineBrand",
-                        value: product.comparibleEngineBrand,
+                        key: "Model",
+                        value: product.application,
                         height: 10
                     })
                 }
-                if (product.modeNumber) {
+
+                if (product.engineBrand) {
                     arr.push({
                         type: 'product',
-                        key: "Mode Number",
-                        value: product.modeNumber,
+                        key: "Engine Make",
+                        value: product.engineBrand,
                         height: 10
                     })
                 }
-                if (product.engineNumber) {
+                if (product.engineNo) {
                     arr.push({
                         type: 'product',
-                        key: "Engine Number",
-                        value: product.engineNumber,
+                        key: "Engine",
+                        value: product.engineNo,
                         height: 10
                     })
                 }
-                if (product.replacementPartNumber) {
+                if (product.oemNo) {
                     arr.push({
                         type: 'product',
-                        key: "Replacement PartNumber",
-                        value: product.replacementPartNumber,
+                        key: "Replaces Part No",
+                        value: product.oemNo,
                         height: 10
                     })
                 }
