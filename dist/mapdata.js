@@ -1,8 +1,9 @@
 const fs = require('fs')
 const path = require('path')
 const data = require('./mock.json')
-console.log(data);
 const res = []
+let pageNumber = 1
+const titleIndexInfo = []
 for (let i = 0; i < data.length; i++) {
     const oneCategory = data[i]
     const resultData = formatOneCategory(oneCategory, i)
@@ -10,13 +11,42 @@ for (let i = 0; i < data.length; i++) {
         categoryName: oneCategory.categoryName,
         arrdata: resultData
     })
+    const pageList = sortContentByTwo(resultData)
+    titleIndexInfo.push({
+        "level": 1,
+        "href": `#voucher-title-${i}`,
+        "title": oneCategory.categoryName,
+        "page": pageList[0].pageNumber,
+        "height": 6
+    })
+    pageList.forEach(page => {
+        if (!page) {
+            return
+        }
+        // console.log(`page`, page);
+        page.leftList.concat(page.rightList).forEach((item) => {
+            console.log(`item`, item);
+            if (!item.hNumber) {
+                return
+            }
+
+            titleIndexInfo.push({
+                "level": item.height ? 3 : 2,
+                "href": `#voucher-title-${i}-${item.index}`,
+                "title": item.content,
+                "page": page.pageNumber,
+                "height": 6
+            })
+        })
+
+
+
+    })
 
 }
 
 function formatOneCategory(oneCategory, i) {
     const arr = []
-    //  加入三级标题
-    console.log(`dddd`);
     for (let j = 0; j < oneCategory.children.length; j++) {
         const twoCategoryData = oneCategory.children[j];
         arr.push({
@@ -26,7 +56,6 @@ function formatOneCategory(oneCategory, i) {
             content: twoCategoryData.categoryName,
             height: 0
         })
-        console.log(`twoCategoryData`, twoCategoryData);
         for (let k = 0; k < twoCategoryData.children.length; k++) {
             const threeData = twoCategoryData.children[k]
             arr.push({
@@ -97,11 +126,73 @@ function formatOneCategory(oneCategory, i) {
 
         }
     }
-
-
     return arr
 }
 
-console.log(res);
+
+function sortContentByTwo(sortData) {
+    const pageList = []
+    let temp = {
+        leftList: [],
+        leftHeight: 0,
+        leftFull: false,
+        maxHeight: 260,
+        rightList: [],
+        rightFull: false,
+        rightHeight: 0,
+    }
+    let i = 0 // 索引
+    while (true) {
+        const currentData = sortData[i]
+        if (sortData.length === i) {
+            temp.pageNumber = pageNumber
+            pageList.push(temp)
+            // 一个品牌渲染完成, 强行分页
+            pageNumber = pageNumber + 1
+            break
+        }
+        if (!temp.leftFull) {
+            // 左侧没满 , 尝试加到左侧去
+            if (temp.leftHeight + currentData.height > temp.maxHeight) {
+                temp.leftFull = true
+            } else {
+                temp.leftList.push(sortData[i])
+                temp.leftHeight = temp.leftHeight + currentData.height
+                i++
+            }
+            continue
+        }
+        if (!temp.rightFull) {
+            // 右边侧没满 , 加到右侧去
+            if (temp.rightHeight + currentData.height > temp.maxHeight) {
+                temp.rightFull = true
+            } else {
+                temp.rightList.push(sortData[i])
+                temp.rightHeight = temp.rightHeight + currentData.height
+                i++
+            }
+            continue
+        }
+        if (temp.leftFull && temp.rightFull) {
+            // 左右都满了 添加新的分页
+            temp.pageNumber = pageNumber
+            pageList.push(temp)
+            //内容填充 触发分页
+            pageNumber = pageNumber + 1
+            temp = {
+                leftList: [],
+                leftHeight: 0,
+                leftFull: false,
+                maxHeight: 260,
+                rightList: [],
+                rightFull: false,
+                rightHeight: 0,
+            }
+            pageList.push(undefined)
+        }
+    }
+    return pageList
+}
 
 fs.writeFileSync(path.resolve(__dirname, './arrData.json'), JSON.stringify(res))
+fs.writeFileSync(path.resolve(__dirname, './title.json'), JSON.stringify(titleIndexInfo))

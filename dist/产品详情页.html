@@ -246,21 +246,7 @@
             color: #aaa;
         }
 
-        .page-num-left {
-            color: #F5911D;
-            font-size: 20px;
-            font-weight: bold;
-            position: absolute;
-            left: 10mm;
-        }
 
-        .page-num-right {
-            color: #F5911D;
-            font-size: 20px;
-            font-weight: bold;
-            position: absolute;
-            right: 10mm;
-        }
 
         h3 {
             /* display: none; */
@@ -439,6 +425,38 @@
             height: 100%;
             align-items: center;
         }
+
+        .my-page-num-simple {
+            position: absolute;
+            bottom: 0;
+            bottom: 7mm;
+            left: 0;
+            /* line-height: 10mm; */
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+            color: #999999;
+        }
+
+
+        .my-page-num-simple .page-num-left {
+            color: #F5911D;
+            font-size: 20px;
+            font-weight: bold;
+            position: absolute;
+            left: 10mm;
+        }
+
+        .my-page-num-simple .page-num-right {
+            color: #F5911D;
+            font-size: 20px;
+            font-weight: bold;
+            position: absolute;
+            right: 10mm;
+        }
+        .my-copyright{
+            color: #000;
+        }
     </style>
 
     <div id="content-box" style="display: none"></div>
@@ -447,10 +465,10 @@
             pageSize: "ISO_A4",
             orientation: "portrait",
 
-            simplePageNum: {
-                pageBegin: "#voucher-title-0",
-                pendant: '<div class="page-num-simple": "><span class="page-num-${PAGE%2==0?\'right\':\'left\'}">${PAGE >9?PAGE:"0"+PAGE}</span><span>Fridayparts Copyright ◎ 2024 All rights reserved</span></div>',
-            },
+            // simplePageNum: {
+            //     pageBegin: "#voucher-title-0",
+            //     pendant: '<div class="page-num-simple": "><span class="page-num-${PAGE%2==0?\'right\':\'left\'}">${PAGE >9?PAGE:"0"+PAGE}</span><span>Fridayparts Copyright ◎ 2024 All rights reserved</span></div>',
+            // },
             padding: "0",
             toolBar: {
                 serverPrint: {
@@ -524,7 +542,7 @@
                 // debugger
                 // console.log(`当前数据: `, currentData);
                 if (sortData.length === i) {
-                    console.log(`遍历完所有数据`);
+                    // console.log(`遍历完所有数据`);
                     pageList.push(temp)
                     break
                 }
@@ -565,17 +583,15 @@
                     pageList.push(undefined)
                 }
             }
-
-
             return pageList
         }
 
 
-
+        let pageNumber = 1
         function redenrOneCategory(myData, parentIndex, parentData) {
             const pageList = sortContent(myData)
 
-            console.log(`pageList`, pageList);
+            // console.log(`pageList`, pageList);
 
             function getHalfStr(typeList) {
                 let halfStr = ""
@@ -612,11 +628,15 @@
             }
             for (let i = 0; i < pageList.length; i++) {
                 const page = pageList[i]
-                console.log(`当前页面是`, page);
+                // console.log(`当前页面是`, page);
                 if (!page) {
                     items.push(`<div data-op-type="new-page"></div>`)
                     continue
                 }
+                console.log(`当前页面是`, page);
+
+                page.pageNumber = pageNumber
+                pageNumber += 1
                 let leftStr = getHalfStr(page.leftList)
                 const rightStr = getHalfStr(page.rightList)
                 let temp = `
@@ -626,6 +646,13 @@
                 </div>
                 <div class="my-base-right">
                     ${rightStr}
+                </div>
+
+                <div class="my-page-num-simple">
+                    <span class="page-num-${page.pageNumber % 2 == 0 ? 'right' : 'left'}">
+                        ${page.pageNumber > 9 ? page.pageNumber : "0" + page.pageNumber}
+                    </span>
+                    <span>Fridayparts Copyright <span class="my-copyright">©</span> 2024 All rights reserved</span>
                 </div>
             </div>
             `
@@ -640,6 +667,10 @@
                 const oneTile = `<h2 id="voucher-title-${index}" >  ${data[index].categoryName}  </h2>`
                 items.push(oneTile)
                 redenrOneCategory(arrData, index, data[index])
+                if (index === data.length - 1) {
+                    console.log(index);
+                    break
+                }
                 items.push(`<div data-op-type="new-page"></div>`)
             }
 
