@@ -4,7 +4,6 @@ const data = require('./mock.json')
 const res = []
 let titlePages = []
 const titleIndexInfo = []
-let pageNumber = 1
 for (let i = 0; i < data.length; i++) {
     const oneCategory = data[i]
     const resultData = formatOneCategory(oneCategory, i)
@@ -21,14 +20,13 @@ for (let i = 0; i < data.length; i++) {
         "page": pageList[0].pageNumber,
         "height": 6
     })
-    console.log(`------=================================================`);
-    console.log(pageList);
     pageList.forEach(page => {
         if (!page) {
             return
         }
         // console.log(`page`, page);
         page.leftList.concat(page.rightList).forEach((item) => {
+            console.log(`item`, item);
             if (!item.hNumber) {
                 return
             }
@@ -153,7 +151,10 @@ function sortContentThree(sortData) {
     let i = 0 // 索引
     while (true) {
         const currentData = sortData[i]
+        // debugger
+        console.log(`当前数据: `, currentData);
         if (sortData.length === i) {
+            console.log(`遍历完所有数据`);
             pageList.push(temp)
             break
         }
@@ -170,6 +171,7 @@ function sortContentThree(sortData) {
         }
         if (!temp.middleFull) {
             // 左侧没满 , 尝试加到左侧去
+            console.log(`中间没满`);
             if (temp.middleHeight + currentData.height > temp.maxHeight) {
                 temp.middleFull = true
             } else {
@@ -204,10 +206,8 @@ function sortContentThree(sortData) {
     return pageList
 }
 
-
-
-function sortContentByTwo(sortData,) {
-
+function sortContentByTwo(sortData, startPage = 1) {
+    let pageNumber = startPage
     const pageList = []
     let temp = {
         leftList: [],
@@ -269,13 +269,15 @@ function sortContentByTwo(sortData,) {
         }
     }
     return {
-        pageList
+        pageList,
+        startPage,
+        endPage: pageNumber
     }
 }
-// 
 
 
 
 
 fs.writeFileSync(path.resolve(__dirname, './arrData.json'), JSON.stringify(res))
+fs.writeFileSync(path.resolve(__dirname, './title.json'), JSON.stringify(titleIndexInfo))
 fs.writeFileSync(path.resolve(__dirname, './titlePages.json'), JSON.stringify(titlePages))
