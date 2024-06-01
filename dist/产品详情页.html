@@ -454,7 +454,8 @@
             position: absolute;
             right: 10mm;
         }
-        .my-copyright{
+
+        .my-copyright {
             color: #000;
         }
     </style>
@@ -527,7 +528,7 @@
         // 左侧放内容 
         function sortContent(sortData) {
             const pageList = []
-            let temp = {
+            const baseData = {
                 leftList: [],
                 leftHeight: 0,
                 leftFull: false,
@@ -536,6 +537,7 @@
                 rightFull: false,
                 rightHeight: 0,
             }
+            let temp = JSON.parse(JSON.stringify(baseData))
             let i = 0 // 索引
             while (true) {
                 const currentData = sortData[i]
@@ -571,16 +573,8 @@
                 if (temp.leftFull && temp.rightFull) {
                     // 左右都满了 添加新的分页
                     pageList.push(temp)
-                    temp = {
-                        leftList: [],
-                        leftHeight: 0,
-                        leftFull: false,
-                        maxHeight: 260,
-                        rightList: [],
-                        rightFull: false,
-                        rightHeight: 0,
-                    }
                     pageList.push(undefined)
+                    temp = JSON.parse(JSON.stringify(baseData))
                 }
             }
             return pageList
@@ -590,7 +584,7 @@
         let pageNumber = 1
         function redenrOneCategory(myData, parentIndex, parentData) {
             const pageList = sortContent(myData)
-
+            const oneCategoryStr = []
             // console.log(`pageList`, pageList);
 
             function getHalfStr(typeList) {
