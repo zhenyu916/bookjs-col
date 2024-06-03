@@ -460,6 +460,9 @@
         }
     </style>
     <style>
+        .nop-page-item-pagenum-1{
+            display: none;
+        }
         .flex-content {
             display: flex;
             /* padding-top: 6mm; */
@@ -910,6 +913,19 @@
 
     </script>
     <script>
+        // 
+
+        var renderCover = function (path) {
+            const str = `<div data-op-type="block-box">
+                    <div class="coverImg">
+                        <img src="${path}"  />    
+                    </div>
+                </div>`
+
+            return str
+
+        };
+
         function getPropsStr(key, value) {
             const str = `<div class="my-content-box"> 
                     <div class="my-content-left">
@@ -1110,10 +1126,21 @@
             const productData = productInfo  //await $.getJSON('./arrData.json')
             const titleData = titlePages // await $.getJSON('./titlePages.json')
             const list = []
-            // 
+            const cover1Str = renderCover('./cover1.png')
+            list.push(cover1Str)
+            list.push('<div data-op-type="new-page" />');
+
+
             list.push(...renderTitle(titleData))
             // 
             list.push(...renderProductPage(productData))
+
+         
+            const cover2Str = renderCover('./cover2.png')
+            list.push(cover2Str)
+
+
+
             $("#content-box").html(list.join(""));
             bookConfig.start = true;
         }
