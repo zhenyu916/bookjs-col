@@ -161,10 +161,13 @@
 
         .nop-page-item.nop-page-item-odd .volume-mark>span {
             padding-right: 12px;
+            padding-right: 12px;
+
         }
 
         .nop-page-item.nop-page-item-even .volume-mark>span {
             padding-left: 12px;
+            padding-right: 12px;
         }
     </style>
     <style>
@@ -337,9 +340,17 @@
 
         .item-des {
             font-size: 10px;
-            line-height: 10px;
+            line-height: 12px;
             text-transform: uppercase;
-
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+            text-align: left;
+            /* width: 100%; */
+            /* padding-right: 10mm; */
+            width: 136mm;
         }
 
         .catalog-level.catalog-level-1 .catalog-item-title a {
@@ -601,7 +612,8 @@
             padding-left: 70mm;
             font-weight: 500;
         }
-        .coverImg{
+
+        .coverImg {
             position: absolute;
             left: 0;
             right: 0;
@@ -656,6 +668,7 @@
                 const { pageList } = sortContentByTwo(resultData)
                 productInfo.push({
                     categoryName: oneCategory.categoryName,
+                    categoryShortDescription: oneCategory.categoryShortDescription,
                     pageList,
                 })
                 titleIndexInfo.push({
@@ -954,16 +967,21 @@
 
             return value ? str : "";
         }
-        function getPageHedaerStr(oneTitle, i) {
+        function getPageHedaerStr(oneCategoryData, i) {
+            console.log(oneCategoryData);
+            // const categoryShortDescription = oneCategoryData.categoryShortDescription.replac
+            const categoryShortDescription = oneCategoryData.categoryShortDescription.replace(/<.*?>/g, '')
+            console.log(categoryShortDescription);
+
             const str = `
                 <div data-op-type="pendants" class=""> 
                     <div class="volume-mark volume-${i} my-page-title ">
                         <div>
                             <div class="page-title-item item-title">
-                                Aftermarket Parts ${oneTitle}
+                                Aftermarket Parts ${oneCategoryData.categoryName}
                             </div>
                             <div class="page-title-item item-des">
-                                THIS IS A BRIEF INTRODUCTION THAT DESCRIBES THE BRAND
+                                THIS IS A BRIEF INTRODUCTION THAT DESCRIBES THE ${categoryShortDescription}
                             </div>    
                         </div>
                     </div>
@@ -999,7 +1017,7 @@
                         </div>
                     `
                         if (direct === 'left') {
-                            oneCategoryStr.push(getPageHedaerStr(`${oneCategoryData.categoryName}`, parentIndex))
+                            oneCategoryStr.push(getPageHedaerStr(oneCategoryData, parentIndex))
                         }
                     }
                     else if (item.type === "split") {
