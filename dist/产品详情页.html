@@ -333,7 +333,6 @@
             font-size: 16px;
             font-weight: bold;
             line-height: 18px;
-            padding-bottom: 4px;
             text-transform: uppercase;
 
         }
@@ -633,7 +632,7 @@
 
             // simplePageNum: {
             //     pageBegin: "#voucher-title-0",
-            //     pendant: '<div class="page-num-simple": "><span class="page-num-${PAGE%2==0?\'right\':\'left\'}">${PAGE >9?PAGE:"0"+PAGE}</span><span>Fridayparts Copyright ◎ 2024 All rights reserved</span></div>',
+            //     pendant: '<div class="page-num-simple": "><span class="page-num-${PAGE%2==0?\'right\':\'left\'}">${PAGE >9?PAGE:"0"+PAGE}</span><span>FridayParts Copyright ◎ 2024 All rights reserved</span></div>',
             // },
             padding: "0",
             toolBar: {
@@ -980,9 +979,6 @@
                             <div class="page-title-item item-title">
                                 Aftermarket Parts ${oneCategoryData.categoryName}
                             </div>
-                            <div class="page-title-item item-des">
-                                THIS IS A BRIEF INTRODUCTION THAT DESCRIBES THE ${categoryShortDescription}
-                            </div>    
                         </div>
                     </div>
                 </div>
@@ -1052,7 +1048,7 @@
                     <span class="page-num-${page.pageNumber % 2 == 0 ? 'right' : 'left'}">
                         ${page.pageNumber > 9 ? page.pageNumber : "0" + page.pageNumber}
                     </span>
-                    <span>${page.pageNumber % 2 == 0 ? `Fridayparts Copyright <span class="my-copyright">©</span> 2024 All rights reserved</span>` : `Part Numbers Are Used For Reference Purposes Only`}
+                    <span>${page.pageNumber % 2 == 0 ? `FridayParts Copyright <span class="my-copyright">©</span> 2024 All rights reserved</span>` : `Part Numbers Are Used For Reference Purposes Only`}
                 </div>
             </div>
             `
@@ -1164,16 +1160,26 @@
             const cover1Str = renderCover('./cover1.png')
             list.push(cover1Str)
             list.push('<div data-op-type="new-page" />');
-
+            
+            const cover2Str = renderCover('./cover2.png')
+            list.push(cover2Str)
+            list.push('<div data-op-type="new-page" />');
 
             list.push(...renderTitle(titleData))
             // 
+
+            const jieshao = renderCover('./jieshao.png')
+            const jieshao2 = renderCover('./jieshao2.png')
+        
+            list.push(jieshao)
+            list.push('<div data-op-type="new-page" />');
+            list.push(jieshao2)
+            list.push('<div data-op-type="new-page" />');
+
             list.push(...renderProductPage(productData))
-            const cover2Str = renderCover('./cover2.png')
-            list.push(cover2Str)
 
-
-
+            const endPage = renderCover('./endPage.png')
+            list.push(endPage)
             $("#content-box").html(list.join(""));
             bookConfig.start = true;
         }
