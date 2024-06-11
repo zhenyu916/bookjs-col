@@ -654,12 +654,13 @@
         };
     </script>
     <script>
+        let pageNumber = 1
         function clearData(originData) {
             const data = originData
             const productInfo = []
             let titlePages = []
             const titleIndexInfo = []
-            let pageNumber = 1
+            
             for (let i = 0; i < data.length; i++) {
                 const oneCategory = data[i]
                 const resultData = formatOneCategory(oneCategory, i)
@@ -969,8 +970,8 @@
         function getPageHedaerStr(oneCategoryData, i) {
             console.log(oneCategoryData);
             // const categoryShortDescription = oneCategoryData.categoryShortDescription.replac
-            const categoryShortDescription = oneCategoryData.categoryShortDescription.replace(/<.*?>/g, '')
-            console.log(categoryShortDescription);
+            // const categoryShortDescription = oneCategoryData.categoryShortDescription?.replace(/<.*?>/g, '')
+            // console.log(categoryShortDescription);
 
             const str = `
                 <div data-op-type="pendants" class=""> 
@@ -1177,9 +1178,14 @@
             list.push('<div data-op-type="new-page" />');
 
             list.push(...renderProductPage(productData))
-
-            const endPage = renderCover('./endPage.png')
-            list.push(endPage)
+            
+            // if(pageNumber%2==0){
+            //     const endPage = renderCover('./endPage.png')
+            //     list.push(endPage)
+            //     list.push('<div data-op-type="new-page" />');
+            // }
+            const odd = renderCover('./odd.png')
+            list.push(odd)
             $("#content-box").html(list.join(""));
             bookConfig.start = true;
         }
@@ -1221,12 +1227,7 @@
                 reader.onload = function (e) {
                     const content = e.target.result;
                     const jsonData = JSON.parse(content);
-
-                    // 在这里可以对jsonData进行操作，比如显示在页面上
-
                     const { productInfo, titlePages } = clearData(jsonData.data)
-
-
                     renderBook(productInfo, titlePages)
 
                 };
