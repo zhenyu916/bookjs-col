@@ -1,5 +1,8 @@
 const fs = require("fs");
 const path = require("path");
+const eleHeightData = require("./eleHeightData.json");
+const originData = require("./mock.json");
+
 
 function sortContentByTwo(sortData) {
     const pageList = [];
@@ -67,8 +70,7 @@ function sortContentByTwo(sortData) {
     };
 }
 let pageNumber = 1;
-const eleHeightData = require("./eleHeightData.json");
-const originData = require("./mock.json");
+
 
 let titlePages = [];
 const titleIndexInfo = [];

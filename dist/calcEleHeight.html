@@ -174,7 +174,7 @@
                 padding-right: 12px;
             }
             .mian--box {
-                width: 104mm;
+                width: 351px;
                 font-size: 3mm;
             }
         </style>
@@ -230,7 +230,7 @@
                 text-overflow: ellipsis;
                 display: -webkit-box;
                 -webkit-box-orient: vertical;
-                -webkit-line-clamp: 2;
+                -webkit-line-clamp: 4;
                 width: 100%;
             }
 
@@ -699,7 +699,7 @@
             }
             let globalData = [];
             const renderStart = async function () {
-                let idNumber = 0
+                let idNumber = 0;
                 const data = await $.getJSON("./clearData/arrData.json");
                 globalData = data;
                 const eleList = [];
@@ -709,14 +709,14 @@
                 });
 
                 const renderHtml = `
-                <div class="mian--box">${eleList.join(" ")} </div>`;
+                <div class="mian--box" data-op-type="mix-box">${eleList.join(" ")} </div>`;
                 console.log(renderHtml);
                 $("#content-box").html(renderHtml);
                 bookConfig.start = true;
             };
             renderStart();
             function getEleHeight() {
-                let idNumber = 0
+                let idNumber = 0;
                 globalData.forEach((list) => {
                     list.forEach((item, i) => {
                         const ele = document.getElementById(item.id);
