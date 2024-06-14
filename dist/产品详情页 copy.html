@@ -931,8 +931,10 @@
                 //     list.push(endPage)
                 //     list.push('<div data-op-type="new-page" />');
                 // }
-                const odd = renderCover("./odd2.png");
+                const odd = renderCover("./odd.png");
                 list.push(odd);
+                const odd2 = renderCover("./odd2.png");
+                list.push(odd2);
                 $("#content-box").html(list.join(""));
                 bookConfig.start = true;
             }
