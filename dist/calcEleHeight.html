@@ -201,18 +201,24 @@
                 border: 1px solid #666;
                 border-top: 0;
                 box-sizing: border-box;
+                position: relative;
             }
 
             .my-content-left {
-                width: 25mm;
+                width: 27mm;
                 height: 100%;
                 display: flex;
                 align-items: center;
-                border-right: 1px solid #666;
                 padding: 0 1mm;
                 box-sizing: border-box;
             }
-
+            .my-content-middle {
+                border-right: 1px solid #666;
+                width: 0px;
+                height: 100%;
+                left: 27mm;
+                position: absolute;
+            }
             .my-content-right {
                 box-sizing: border-box;
                 /* width: 70mm; */
@@ -688,6 +694,7 @@
                     <div class="my-content-left">
                         ${key}
                     </div>
+                    <div class="my-content-middle"></div>
                     <div class="my-content-right">
                         <div class="content-text">
                             ${value}    

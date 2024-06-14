@@ -40,24 +40,16 @@ function formatOneCategory(oneCategory, i) {
                     value: product.name,
                     height: 10,
                 });
-                if (product.brand) {
+                //1
+                if (product.oemNo) {
                     arr.push({
                         type: "product",
-                        key: "Model  Make",
-                        value: product.brand,
+                        key: "Replaces Part No.",
+                        value: product.oemNo,
                         height: 10,
                     });
                 }
-
-                if (product.application) {
-                    arr.push({
-                        type: "product",
-                        key: "Model",
-                        value: product.application,
-                        height: 10,
-                    });
-                }
-
+                //2
                 if (product.engineBrand) {
                     arr.push({
                         type: "product",
@@ -66,6 +58,7 @@ function formatOneCategory(oneCategory, i) {
                         height: 10,
                     });
                 }
+                //3
                 if (product.engineNo) {
                     arr.push({
                         type: "product",
@@ -74,15 +67,24 @@ function formatOneCategory(oneCategory, i) {
                         height: 10,
                     });
                 }
-                if (product.oemNo) {
+                //4
+                if (product.brand) {
                     arr.push({
                         type: "product",
-                        key: "Replaces Part No",
-                        value: product.oemNo,
+                        key: "Model  Make",
+                        value: product.brand,
                         height: 10,
                     });
                 }
-
+                //5
+                if (product.application) {
+                    arr.push({
+                        type: "product",
+                        key: "Model",
+                        value: product.application,
+                        height: 10,
+                    });
+                }
                 arr.push({
                     type: "split",
                     content: "1 / 1",
