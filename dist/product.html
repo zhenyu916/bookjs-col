@@ -900,10 +900,7 @@
                     "./clearData/titlePages.json"
                 );
                 console.log(`productInfo`, productData);
-                console.log(`titlePages`, titleData);
-                console.log(
-                    `renderBookrenderBookrenderBookrenderBookrenderBookrenderBook`
-                );
+
                 const list = [];
                 const cover1Str = renderCover("./cover1.png");
                 list.push(cover1Str);
@@ -926,13 +923,33 @@
 
                 list.push(...renderProductPage(productData));
 
-                // if(pageNumber%2==0){
-                //     const endPage = renderCover('./endPage.png')
-                //     list.push(endPage)
-                //     list.push('<div data-op-type="new-page" />');
-                // }
-                const odd = renderCover("./odd.png");
-                list.push(odd);
+                // console.log(`pageNumber` ,pageNumber);
+
+                const indexPageLength = titleData.filter((item) => item).length;
+                console.log(`目录总共 ${indexPageLength} 页 `, indexPageLength);
+                const productPageLength = productData
+                    .reduce((acc, current) => {
+                        acc.push(...current.pageList.filter((item) => item));
+                        return acc;
+                    }, [])
+                    .filter((item) => item).length;
+                console.log(
+                    `产品总共${productPageLength} 页`,
+                    productPageLength
+                );
+                // 奇数偶数插页问题,因为最终要拿到 偶数的图书去打印, 奇数的情况下要去补充一张图,凑成偶数.
+                const beforePageLength =
+                    productPageLength + indexPageLength + 4;
+                console.log(`开始进行 页面尾部插图. , 当前 beforePageLength`,beforePageLength);
+
+                if (beforePageLength % 2 == 0) {
+                    const odd = renderCover("./odd.png");
+                    list.push(odd);
+                    list.push('<div data-op-type="new-page" />');
+                    console.log(`最终结果是 ${beforePageLength + 2} 页`);
+                } else {
+                    console.log(`最终结果是 ${beforePageLength + 1} 页`);
+                }
                 const odd2 = renderCover("./odd2.png");
                 list.push(odd2);
                 $("#content-box").html(list.join(""));
