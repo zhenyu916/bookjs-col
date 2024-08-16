@@ -3,8 +3,7 @@ const path = require("path");
 const eleHeightData = require("./eleHeightData.json");
 const originData = require("./mock.json");
 
-
-function sortContentByTwo(sortData) {
+function sortContentByTwo(sortData = []) {
     const pageList = [];
     let temp = {
         leftList: [],
@@ -71,13 +70,14 @@ function sortContentByTwo(sortData) {
 }
 let pageNumber = 1;
 
-
 let titlePages = [];
 const titleIndexInfo = [];
 const productInfo = [];
 for (let i = 0; i < originData.length; i++) {
     const oneCategory = originData[i];
     const resultData = eleHeightData[i];
+    console.log(`resultData`, i, resultData);
+
     const { pageList } = sortContentByTwo(resultData);
     productInfo.push({
         categoryName: oneCategory.categoryName,
@@ -132,9 +132,15 @@ function sortContentByTwo(sortData) {
         rightFull: false,
         rightHeight: 0,
     };
-    let i = 0; // 索引
+    let i = 0;
+    if (!sortData) {
+        console.log(`sortData[i]`, sortData);
+
+        return;
+    }
     while (true) {
         const currentData = sortData[i];
+
         if (sortData.length === i) {
             temp.pageNumber = pageNumber;
             pageList.push(temp);

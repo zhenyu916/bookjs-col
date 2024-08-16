@@ -902,7 +902,7 @@
                 console.log(`productInfo`, productData);
 
                 const list = [];
-                const cover1Str = renderCover("./cover1.png");
+                const cover1Str = renderCover("./cover1.jpg");
                 list.push(cover1Str);
                 list.push('<div data-op-type="new-page" />');
 
@@ -950,7 +950,7 @@
                 } else {
                     console.log(`最终结果是 ${beforePageLength + 1} 页`);
                 }
-                const odd2 = renderCover("./odd2.png");
+                const odd2 = renderCover("./odd2.jpg");
                 list.push(odd2);
                 $("#content-box").html(list.join(""));
                 bookConfig.start = true;
