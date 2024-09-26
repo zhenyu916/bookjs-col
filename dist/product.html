@@ -616,6 +616,24 @@
                 bottom: 0;
                 z-index: 1000;
             }
+            .coverImg .ercode-top{
+                position: absolute;
+                right: 30px;
+                z-index: 1000;
+                bottom: 80px;
+                width: 180px;
+                height: 180px;
+            }
+
+            .coverImg  .ercode-bottom{
+                position: absolute;
+                right: 50%;
+                transform: translateX(50%);
+                z-index: 1000;
+                bottom: 46px;
+                width: 180px;
+                height: 180px;
+            }
         </style>
         <input type="file" id="fileInput" style="display: none" />
         <div id="content-box" style="display: none"></div>
@@ -659,7 +677,15 @@
 
                 return str;
             };
-
+            var renderCoverERCode = function (path , ercode , ercodeClass) {
+                const str = `<div data-op-type="block" class="my-base-page"  style="height:296mm" >
+                    <div class="coverImg">
+                        <img src="${path}"  />   
+                        <img src="${ercode}" class="${ercodeClass}"  />    
+                    </div>
+                </div>`;
+                return str;
+            };
             function getPropsStr(item) {
                 const str = `<div class="my-content-box" style="height:${item.height}mm"> 
                     <div class="my-content-left">
@@ -902,7 +928,10 @@
                 console.log(`productInfo`, productData);
 
                 const list = [];
-                const cover1Str = renderCover("./cover1.jpg");
+
+                // renderCoverERCode
+
+                const cover1Str = renderCoverERCode("./cover1.jpg" , './ercode.png', 'ercode-top');
                 list.push(cover1Str);
                 list.push('<div data-op-type="new-page" />');
 
@@ -950,7 +979,8 @@
                 } else {
                     console.log(`最终结果是 ${beforePageLength + 1} 页`);
                 }
-                const odd2 = renderCover("./odd2.jpg");
+                // const odd2 = renderCover("./odd2.jpg");
+                const odd2 = renderCoverERCode("./odd2.jpg" , './ercode.png', 'ercode-bottom');
                 list.push(odd2);
                 $("#content-box").html(list.join(""));
                 bookConfig.start = true;
