@@ -938,10 +938,6 @@
                 const cover2Str = renderCover("./cover2.png");
                 list.push(cover2Str);
                 list.push('<div data-op-type="new-page" />');
-
-                list.push(...renderTitle(titleData));
-                //
-
                 const jieshao = renderCover("./jieshao.png");
                 const jieshao2 = renderCover("./jieshao2.png");
 
@@ -949,6 +945,10 @@
                 list.push('<div data-op-type="new-page" />');
                 list.push(jieshao2);
                 list.push('<div data-op-type="new-page" />');
+
+                list.push(...renderTitle(titleData));
+                //
+
 
                 list.push(...renderProductPage(productData));
 
