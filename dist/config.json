@@ -1,0 +1,18 @@
+{
+    "en": {
+        "first_img_list": [
+            "./asset/en/cover1.jpg",
+            "./asset/en/cover2.png",
+            "./asset/en/jieshao.png",
+            "./asset/en/jieshao2.png"
+        ],
+        "odd_even_fill_img_list": "./asset/en/odd.png",
+        "last_img_list": ["./asset/en/odd2.jpg"],
+        "copyright_text": "22FridayParts Copyright <span class=\"my-copyright\">©</span> 2024 All rights reserved</span>",
+        "copyright_text_2": "22Part Numbers Are Used For Reference Purposes Only",
+        "page_logo_src_left": "./asset/en/pagelogo_left.png",
+        "page_logo_src_right": "./asset/en/pagelogo_right.jpeg",
+        "pagetoptext": "AFTERMARKET PARTS222 {{brand}}",
+        "index_title": "TABLE OF CONTENTS222"
+    }
+}
